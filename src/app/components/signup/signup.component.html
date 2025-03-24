@@ -1,0 +1,33 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Sign Up</h2>
+
+  <form (ngSubmit)="onSignUp()">
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input
+        type="text"
+        [(ngModel)]="username"
+        name="username"
+        class="form-control"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        class="form-control"
+        requiired
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>
