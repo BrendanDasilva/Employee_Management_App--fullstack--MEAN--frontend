@@ -73,4 +73,16 @@ export class GraphqlService {
       fetchPolicy: 'no-cache',
     });
   }
+
+  // ====== Employee: Delete ======
+  deleteEmployee(id: string) {
+    return this.client.mutate({
+      mutation: gql`
+        mutation DeleteEmployee($id: ID!) {
+          deleteEmployee(id: $id)
+        }
+      `,
+      variables: { id },
+    });
+  }
 }

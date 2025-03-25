@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
-export const authGuard: CanActivateFn = () => {
-  const token = localStorage.getItem('token');
-  return !!token; // returns true if token exists
-};
+export function authGuard(): boolean {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    return !!localStorage.getItem('token');
+  }
+  return false;
+}

@@ -37,6 +37,15 @@ export class EmployeeListComponent implements OnInit {
   }
 
   deleteEmployee(id: string) {
-    console.log('Delete employee with ID:', id);
+    if (confirm('Are you sure you want to delete this employee?')) {
+      this.graphql.deleteEmployee(id).then(
+        () => {
+          this.employees = this.employees.filter((emp) => emp.id !== id);
+        },
+        (err) => {
+          console.error('Delete failed:', err);
+        }
+      );
+    }
   }
 }
