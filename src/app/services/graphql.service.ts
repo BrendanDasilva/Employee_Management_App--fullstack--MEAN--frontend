@@ -35,6 +35,57 @@ export class GraphqlService {
     });
   }
 
+  // ====== Get Employee by ID Query ======
+  getEmployeeById(id: string) {
+    return this.client.query({
+      query: gql`
+        query GetEmployeeById($id: ID!) {
+          getEmployeeById(id: $id) {
+            id
+            first_name
+            last_name
+            email
+            designation
+            department
+          }
+        }
+      `,
+      variables: { id },
+      fetchPolicy: 'no-cache',
+    });
+  }
+
+  // ====== Update Employee Query ======
+  updateEmployee(id: string, updatedData: any) {
+    return this.client.mutate({
+      mutation: gql`
+        mutation UpdateEmployee(
+          $id: ID!
+          $first_name: String!
+          $last_name: String!
+          $email: String!
+          $designation: String!
+          $department: String!
+        ) {
+          updateEmployee(
+            id: $id
+            first_name: $first_name
+            last_name: $last_name
+            email: $email
+            designation: $designation
+            department: $department
+          ) {
+            id
+          }
+        }
+      `,
+      variables: {
+        id,
+        ...updatedData,
+      },
+    });
+  }
+
   // ====== Auth: Signup Mutation ======
   signup(username: string, email: string, password: string) {
     return this.client.mutate({

@@ -1,0 +1,44 @@
+<div class="container mt-4">
+  <h2>Edit Employee</h2>
+
+  <form (ngSubmit)="onUpdateEmployee()">
+    <div class="mb-3">
+      <label>First Name</label>
+      <input
+        class="form-control"
+        [(ngModel)]="employee.first_name"
+        name="first_name"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Last Name</label>
+      <input
+        class="form-control"
+        [(ngModel)]="employee.last_name"
+        name="last_name"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Email</label>
+      <input class="form-control" [(ngModel)]="employee.email" name="email" />
+    </div>
+    <div class="mb-3">
+      <label>Designation</label>
+      <input
+        class="form-control"
+        [(ngModel)]="employee.designation"
+        name="designation"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Department</label>
+      <input
+        class="form-control"
+        [(ngModel)]="employee.department"
+        name="department"
+      />
+    </div>
+
+    <button class="btn btn-primary">Update</button>
+  </form>
+</div>

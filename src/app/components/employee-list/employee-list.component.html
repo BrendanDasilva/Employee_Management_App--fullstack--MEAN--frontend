@@ -26,12 +26,12 @@
           >
             View
           </button>
-          <button
+          <a
             class="btn btn-sm btn-warning me-2"
-            (click)="editEmployee(employee)"
+            [routerLink]="['/employees/edit', employee.id]"
           >
             Edit
-          </button>
+          </a>
           <button
             class="btn btn-sm btn-danger"
             (click)="deleteEmployee(employee.id)"
