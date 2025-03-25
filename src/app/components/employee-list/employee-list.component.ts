@@ -27,4 +27,16 @@ export class EmployeeListComponent implements OnInit {
       }
     );
   }
+
+  viewEmployee(emp: any) {
+    console.log('View employee:', emp);
+  }
+
+  editEmployee(emp: any) {
+    console.log('Edit employee:', emp);
+  }
+
+  deleteEmployee(id: string) {
+    console.log('Delete employee with ID:', id);
+  }
 }
