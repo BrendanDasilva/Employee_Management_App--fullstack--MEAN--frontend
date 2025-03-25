@@ -22,6 +22,7 @@ export class EmployeeEditComponent {
   };
   loading = true;
   error: any;
+  errorMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -29,28 +30,32 @@ export class EmployeeEditComponent {
     private router: Router
   ) {}
 
-  ngOnInIt() {
+  ngOnInit(): void {
     this.employeeId = this.route.snapshot.paramMap.get('id') || '';
-    this.graphql.getEmployeeById(this.employeeId).then(
+    this.graphql.getEmployeeByEID(this.employeeId).then(
       (result: any) => {
-        this.employee = result.data.getEmployeeById;
+        this.employee = result.data.getEmployeeByEID;
         this.loading = false;
       },
       (err: any) => {
-        this.error = err;
+        this.errorMessage = 'Failed to load employee data.';
         this.loading = false;
       }
     );
   }
 
   onUpdateEmployee() {
-    this.graphql
-      .updateEmployee(this.employeeId, this.employee)
-      .then(() => {
+    this.graphql.updateEmployee(this.employeeId, this.employee).then(
+      () => {
         this.router.navigate(['/employees']);
-      })
-      .catch((err) => {
-        this.error = err;
-      });
+      },
+      (err) => {
+        this.errorMessage = 'Failed to update employee.';
+      }
+    );
+  }
+
+  onCancel() {
+    this.router.navigate(['/employees']);
   }
 }

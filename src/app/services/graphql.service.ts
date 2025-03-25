@@ -36,17 +36,18 @@ export class GraphqlService {
   }
 
   // ====== Get Employee by ID Query ======
-  getEmployeeById(id: string) {
+  getEmployeeByEID(id: string) {
     return this.client.query({
       query: gql`
-        query GetEmployeeById($id: ID!) {
-          getEmployeeById(id: $id) {
+        query GetEmployeeByEID($id: ID!) {
+          getEmployeeByEID(id: $id) {
             id
             first_name
             last_name
             email
             designation
             department
+            salary
           }
         }
       `,
@@ -66,6 +67,7 @@ export class GraphqlService {
           $email: String!
           $designation: String!
           $department: String!
+          $salary: Float!
         ) {
           updateEmployee(
             id: $id
@@ -74,6 +76,7 @@ export class GraphqlService {
             email: $email
             designation: $designation
             department: $department
+            salary: $salary
           ) {
             id
           }
