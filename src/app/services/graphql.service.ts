@@ -17,6 +17,40 @@ export class GraphqlService {
     });
   }
 
+  // ====== Add Employee Mutation ======
+  addEmployee(employeeData: any) {
+    return this.client.mutate({
+      mutation: gql`
+        mutation AddEmployee(
+          $first_name: String!
+          $last_name: String!
+          $email: String!
+          $gender: String!
+          $designation: String!
+          $salary: Float!
+          $date_of_joining: String!
+          $department: String!
+        ) {
+          addEmployee(
+            first_name: $first_name
+            last_name: $last_name
+            email: $email
+            gender: $gender
+            designation: $designation
+            salary: $salary
+            date_of_joining: $date_of_joining
+            department: $department
+          ) {
+            id
+          }
+        }
+      `,
+      variables: {
+        ...employeeData,
+      },
+    });
+  }
+
   // ====== Employee Query ======
   getAllEmployees() {
     return this.client.query({
@@ -90,6 +124,18 @@ export class GraphqlService {
     });
   }
 
+  // ====== Employee: Delete ======
+  deleteEmployee(id: string) {
+    return this.client.mutate({
+      mutation: gql`
+        mutation DeleteEmployee($id: ID!) {
+          deleteEmployee(id: $id)
+        }
+      `,
+      variables: { id },
+    });
+  }
+
   // ====== Auth: Signup Mutation ======
   signup(username: string, email: string, password: string) {
     return this.client.mutate({
@@ -126,18 +172,6 @@ export class GraphqlService {
       `,
       variables: { username, password },
       fetchPolicy: 'no-cache',
-    });
-  }
-
-  // ====== Employee: Delete ======
-  deleteEmployee(id: string) {
-    return this.client.mutate({
-      mutation: gql`
-        mutation DeleteEmployee($id: ID!) {
-          deleteEmployee(id: $id)
-        }
-      `,
-      variables: { id },
     });
   }
 }

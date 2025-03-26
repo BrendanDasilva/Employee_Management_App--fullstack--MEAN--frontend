@@ -14,6 +14,14 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'employees/add',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./components/employee-add/employee-add.component').then(
+        (m) => m.EmployeeAddComponent
+      ),
+  },
+  {
     path: 'employees/view/:id',
     canActivate: [authGuard],
     loadComponent: () =>
