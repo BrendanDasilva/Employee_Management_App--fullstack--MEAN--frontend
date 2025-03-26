@@ -29,6 +29,7 @@ export class GraphqlService {
             email
             designation
             department
+            salary
           }
         }
       `,
