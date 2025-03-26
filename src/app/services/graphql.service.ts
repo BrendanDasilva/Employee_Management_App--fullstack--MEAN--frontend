@@ -51,7 +51,7 @@ export class GraphqlService {
     });
   }
 
-  // ====== Employee Query ======
+  // ====== Get All Employees Query ======
   getAllEmployees() {
     return this.client.query({
       query: gql`
@@ -133,6 +133,27 @@ export class GraphqlService {
         }
       `,
       variables: { id },
+    });
+  }
+
+  // ====== Employee: Search ======
+  searchEmployees(designation: string, department: string) {
+    return this.client.query({
+      query: gql`
+        query SearchEmployees($designation: String, $department: String) {
+          searchEmployees(designation: $designation, department: $department) {
+            id
+            first_name
+            last_name
+            email
+            designation
+            department
+            salary
+          }
+        }
+      `,
+      variables: { designation, department },
+      fetchPolicy: 'no-cache',
     });
   }
 
