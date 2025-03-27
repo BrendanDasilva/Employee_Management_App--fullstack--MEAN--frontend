@@ -80,9 +80,11 @@ export class GraphqlService {
             first_name
             last_name
             email
+            gender
             designation
             department
             salary
+            date_of_joining
           }
         }
       `,

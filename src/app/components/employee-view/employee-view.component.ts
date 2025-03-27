@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { GraphqlService } from '../../services/graphql.service';
 
 @Component({
   selector: 'app-employee-view',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './employee-view.component.html',
   styleUrl: './employee-view.component.scss',
 })
-export class EmployeeViewComponent {
+export class EmployeeViewComponent implements OnInit {
   employeeId: string = '';
   employee: any;
   errorMessage = '';
