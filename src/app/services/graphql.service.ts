@@ -67,6 +67,7 @@ export class GraphqlService {
           }
         }
       `,
+      fetchPolicy: 'no-cache',
     });
   }
 

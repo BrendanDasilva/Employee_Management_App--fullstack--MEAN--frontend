@@ -12,14 +12,17 @@ import { EmployeeFormComponent } from '../employee-form/employee-form.component'
   templateUrl: './employee-edit.component.html',
   styleUrl: './employee-edit.component.scss',
 })
-export class EmployeeEditComponent {
+export class EmployeeEditComponent implements OnInit {
   employeeId: string = '';
   employee: any = {
     first_name: '',
     last_name: '',
     email: '',
+    gender: '',
     designation: '',
     department: '',
+    date_of_joining: '',
+    salary: 0,
   };
   loading = true;
   error: any;
@@ -55,6 +58,7 @@ export class EmployeeEditComponent {
         this.errorMessage = '';
         this.loading = false;
 
+        // Hide success message after 5 seconds
         setTimeout(() => {
           this.successMessage = '';
         }, 3000);
@@ -68,6 +72,8 @@ export class EmployeeEditComponent {
   }
 
   onCancel() {
-    this.router.navigate(['/employees']);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/employees']);
+    });
   }
 }

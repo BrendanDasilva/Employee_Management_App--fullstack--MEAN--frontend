@@ -30,6 +30,8 @@ export class EmployeeAddComponent {
 
   constructor(private graphql: GraphqlService, private router: Router) {}
 
+  resetTrigger = false;
+
   onSubmit() {
     this.loading = true;
     this.graphql.addEmployee(this.employee).then(
@@ -50,6 +52,9 @@ export class EmployeeAddComponent {
           salary: 0,
         };
 
+        // Trigger reset
+        this.resetTrigger = true;
+
         // Clear success message after 5 seconds
         setTimeout(() => {
           this.successMessage = '';
@@ -64,6 +69,8 @@ export class EmployeeAddComponent {
   }
 
   onCancel() {
-    this.router.navigate(['/employees']);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/employees']);
+    });
   }
 }
