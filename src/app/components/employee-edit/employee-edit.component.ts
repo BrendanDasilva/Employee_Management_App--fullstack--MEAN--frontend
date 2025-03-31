@@ -48,12 +48,21 @@ export class EmployeeEditComponent {
   }
 
   onUpdateEmployee() {
+    this.loading = true;
     this.graphql.updateEmployee(this.employeeId, this.employee).then(
       () => {
-        this.router.navigate(['/employees']);
+        this.successMessage = 'Employee updated successfully!';
+        this.errorMessage = '';
+        this.loading = false;
+
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 3000);
       },
       (err) => {
         this.errorMessage = 'Failed to update employee.';
+        this.successMessage = '';
+        this.loading = false;
       }
     );
   }

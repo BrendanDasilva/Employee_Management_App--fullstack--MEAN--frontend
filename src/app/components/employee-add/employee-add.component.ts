@@ -34,10 +34,30 @@ export class EmployeeAddComponent {
     this.loading = true;
     this.graphql.addEmployee(this.employee).then(
       () => {
-        this.router.navigate(['/employees']);
+        this.successMessage = 'Employee added successfully!';
+        this.errorMessage = '';
+        this.loading = false;
+
+        // Reset form
+        this.employee = {
+          first_name: '',
+          last_name: '',
+          email: '',
+          gender: '',
+          designation: '',
+          department: '',
+          date_of_joining: '',
+          salary: 0,
+        };
+
+        // Clear success message after 5 seconds
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 5000);
       },
       (err) => {
         this.errorMessage = 'Failed to add employee.';
+        this.successMessage = '';
         this.loading = false;
       }
     );
