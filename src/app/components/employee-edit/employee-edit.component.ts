@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { GraphqlService } from '../../services/graphql.service';
+import { EmployeeFormComponent } from '../employee-form/employee-form.component';
 
 @Component({
   selector: 'app-employee-edit',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, EmployeeFormComponent],
   templateUrl: './employee-edit.component.html',
   styleUrl: './employee-edit.component.scss',
 })
@@ -23,6 +24,8 @@ export class EmployeeEditComponent {
   loading = true;
   error: any;
   errorMessage: string = '';
+  successMessage: string = '';
+  today: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private route: ActivatedRoute,

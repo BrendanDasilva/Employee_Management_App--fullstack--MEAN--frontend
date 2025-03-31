@@ -1,0 +1,182 @@
+<!-- Alerts -->
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+  {{ successMessage }}
+</div>
+
+<form #addForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+  <!-- First Name -->
+  <div class="mb-3">
+    <label class="form-label">First Name</label>
+    <input
+      type="text"
+      class="form-control"
+      name="first_name"
+      [(ngModel)]="employee.first_name"
+      required
+      minlength="2"
+      maxlength="25"
+      pattern="^[a-zA-Z]+$"
+      #firstName="ngModel"
+    />
+    <div class="text-danger" *ngIf="firstName.invalid && firstName.touched">
+      <div *ngIf="firstName.errors?.['required']">First name is required.</div>
+      <div *ngIf="firstName.errors?.['minlength']">Minimum 2 characters.</div>
+      <div *ngIf="firstName.errors?.['maxlength']">Max 25 characters.</div>
+      <div *ngIf="firstName.errors?.['pattern']">Only letters allowed.</div>
+    </div>
+  </div>
+
+  <!-- Last Name -->
+  <div class="mb-3">
+    <label class="form-label">Last Name</label>
+    <input
+      type="text"
+      class="form-control"
+      name="last_name"
+      [(ngModel)]="employee.last_name"
+      required
+      minlength="2"
+      maxlength="25"
+      pattern="^[a-zA-Z]+$"
+      #lastName="ngModel"
+    />
+    <div class="text-danger" *ngIf="lastName.invalid && lastName.touched">
+      <div *ngIf="lastName.errors?.['required']">Last name is required.</div>
+      <div *ngIf="lastName.errors?.['minlength']">Minimum 2 characters.</div>
+      <div *ngIf="lastName.errors?.['maxlength']">Max 25 characters.</div>
+      <div *ngIf="lastName.errors?.['pattern']">Only letters allowed.</div>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      name="email"
+      [(ngModel)]="employee.email"
+      required
+      email
+      #email="ngModel"
+    />
+    <div class="text-danger" *ngIf="email.invalid && email.touched">
+      <div *ngIf="email.errors?.['required']">Email is required.</div>
+      <div *ngIf="email.errors?.['email']">Must be a valid email address.</div>
+    </div>
+  </div>
+
+  <!-- Gender -->
+  <div class="mb-3">
+    <label class="form-label">Gender</label>
+    <select
+      class="form-select"
+      name="gender"
+      [(ngModel)]="employee.gender"
+      required
+      #gender="ngModel"
+    >
+      <option value="" disabled selected>Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+    <div class="text-danger" *ngIf="gender.invalid && gender.touched">
+      Gender is required.
+    </div>
+  </div>
+
+  <!-- Designation -->
+  <div class="mb-3">
+    <label class="form-label">Designation</label>
+    <input
+      type="text"
+      class="form-control"
+      name="designation"
+      [(ngModel)]="employee.designation"
+      required
+      maxlength="50"
+      #designation="ngModel"
+    />
+    <div class="text-danger" *ngIf="designation.invalid && designation.touched">
+      <div *ngIf="designation.errors?.['required']">
+        Designation is required.
+      </div>
+      <div *ngIf="designation.errors?.['maxlength']">Max 50 characters.</div>
+    </div>
+  </div>
+
+  <!-- Department -->
+  <div class="mb-3">
+    <label class="form-label">Department</label>
+    <input
+      type="text"
+      class="form-control"
+      name="department"
+      [(ngModel)]="employee.department"
+      required
+      maxlength="50"
+      #department="ngModel"
+    />
+    <div class="text-danger" *ngIf="department.invalid && department.touched">
+      <div *ngIf="department.errors?.['required']">Department is required.</div>
+      <div *ngIf="department.errors?.['maxlength']">Max 50 characters.</div>
+    </div>
+  </div>
+
+  <!-- Date of Joining -->
+  <div class="mb-3">
+    <label class="form-label">Date of Joining</label>
+    <input
+      type="date"
+      class="form-control"
+      name="date_of_joining"
+      [(ngModel)]="employee.date_of_joining"
+      required
+      max="{{ today }}"
+      #doj="ngModel"
+    />
+    <div class="text-danger" *ngIf="doj.invalid && doj.touched">
+      <div *ngIf="doj.errors?.['required']">Date of joining is required.</div>
+      <div *ngIf="doj.errors?.['max']">Date cannot be in the future.</div>
+    </div>
+  </div>
+
+  <!-- Salary -->
+  <div class="mb-3">
+    <label class="form-label">Salary</label>
+    <input
+      type="number"
+      class="form-control"
+      name="salary"
+      [(ngModel)]="employee.salary"
+      required
+      min="50000"
+      max="1000000"
+      #salary="ngModel"
+    />
+    <div class="text-danger" *ngIf="salary.invalid && salary.touched">
+      <div *ngIf="salary.errors?.['required']">Salary is required.</div>
+      <div *ngIf="salary.errors?.['min']">Minimum salary is 50000.</div>
+      <div *ngIf="salary.errors?.['max']">Maximum salary is 1000000.</div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">
+      Cancel
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="addForm.invalid || loading"
+    >
+      {{ isEditMode ? "Update Employee" : "Add Employee" }}
+    </button>
+  </div>
+</form>

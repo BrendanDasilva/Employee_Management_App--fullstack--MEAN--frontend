@@ -6,78 +6,20 @@
       <div *ngIf="errorMessage" class="alert alert-danger">
         {{ errorMessage }}
       </div>
+      <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+      </div>
 
-      <form (ngSubmit)="onUpdateEmployee()">
-        <div class="mb-3">
-          <label class="form-label">First Name</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="employee.first_name"
-            name="first_name"
-            required
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Last Name</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="employee.last_name"
-            name="last_name"
-            required
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            [(ngModel)]="employee.email"
-            name="email"
-            required
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Designation</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="employee.designation"
-            name="designation"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Department</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="employee.department"
-            name="department"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Salary</label>
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="employee.salary"
-            name="salary"
-          />
-        </div>
-
-        <div class="d-flex justify-content-between">
-          <button type="button" class="btn btn-secondary" (click)="onCancel()">
-            Cancel
-          </button>
-          <button type="submit" class="btn btn-primary">Update</button>
-        </div>
-      </form>
+      <app-employee-form
+        [employee]="employee"
+        [today]="today"
+        [loading]="loading"
+        [successMessage]="successMessage"
+        [errorMessage]="errorMessage"
+        [isEditMode]="true"
+        (submitForm)="onUpdateEmployee()"
+        (cancel)="onCancel()"
+      ></app-employee-form>
     </div>
   </div>
 </div>
