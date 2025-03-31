@@ -23,7 +23,9 @@ export class EmployeeAddComponent {
     salary: 0,
   };
   errorMessage = '';
+  successMessage = '';
   loading = false;
+  today: string = new Date().toISOString().split('T')[0];
 
   constructor(private graphql: GraphqlService, private router: Router) {}
 
