@@ -13,14 +13,14 @@ export class AppComponent {
 
   isLoggedIn(): boolean {
     if (typeof window !== 'undefined') {
-      return !!localStorage.getItem('token');
+      return !!sessionStorage.getItem('token');
     }
     return false;
   }
 
   logout() {
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       window.location.href = '/login';
     }
   }

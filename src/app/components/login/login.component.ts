@@ -21,7 +21,7 @@ export class LoginComponent {
   onLogin() {
     this.graphql.login(this.username, this.password).then(
       (result) => {
-        localStorage.setItem('token', result.data.login.token);
+        sessionStorage.setItem('token', result.data.login.token);
         this.router.navigate(['/employees']);
       },
       (err) => {

@@ -13,7 +13,7 @@ export class PageNotFoundComponent {
   constructor(private router: Router) {}
 
   goHome() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       this.router.navigate(['/employees']);
     } else {
