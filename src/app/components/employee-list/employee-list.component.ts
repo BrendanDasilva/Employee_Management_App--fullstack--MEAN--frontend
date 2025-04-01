@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -16,11 +16,27 @@ export class EmployeeListComponent implements OnInit {
   loading = true;
   error: any;
   searchTerm: string = '';
+  viewMode: 'list' | 'card' = 'list';
 
   constructor(private graphql: GraphqlService) {}
 
   ngOnInit(): void {
     this.loadAllEmployees();
+
+    // Set initial view based on screen size
+    if (window.innerWidth <= 991) {
+      this.viewMode = 'card';
+    }
+  }
+
+  // Automatically switch view on window resize
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    if (event.target.innerWidth <= 991) {
+      this.viewMode = 'card';
+    } else {
+      this.viewMode = 'list';
+    }
   }
 
   loadAllEmployees() {
@@ -72,5 +88,10 @@ export class EmployeeListComponent implements OnInit {
         }
       );
     }
+  }
+
+  // Toggle between list and card views
+  toggleView() {
+    this.viewMode = this.viewMode === 'list' ? 'card' : 'list';
   }
 }
