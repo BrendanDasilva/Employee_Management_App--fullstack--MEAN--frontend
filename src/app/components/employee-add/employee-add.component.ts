@@ -13,6 +13,7 @@ import { EmployeeFormComponent } from '../employee-form/employee-form.component'
   styleUrl: './employee-add.component.scss',
 })
 export class EmployeeAddComponent {
+  // Default employee structure
   employee: any = {
     first_name: '',
     last_name: '',
@@ -23,17 +24,36 @@ export class EmployeeAddComponent {
     date_of_joining: '',
     salary: 0,
   };
+
+  // Image file (optional)
+  selectedImage: File | null = null;
+
+  // Error and success messages
   errorMessage = '';
   successMessage = '';
   loading = false;
   today: string = new Date().toISOString().split('T')[0];
 
-  constructor(private graphql: GraphqlService, private router: Router) {}
-
+  // Used to trigger form reset
   resetTrigger = false;
+
+  constructor(private graphql: GraphqlService, private router: Router) {}
 
   onSubmit() {
     this.loading = true;
+
+    // Prepare FormData for image upload
+    const formData = new FormData();
+    for (const key in this.employee) {
+      formData.append(key, this.employee[key]);
+    }
+
+    // Append image if selected
+    if (this.selectedImage) {
+      formData.append('employee_photo', this.selectedImage);
+    }
+
+    // Call GraphQL service to add employee
     this.graphql.addEmployee(this.employee).then(
       () => {
         this.successMessage = 'Employee added successfully!';

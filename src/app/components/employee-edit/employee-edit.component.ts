@@ -14,6 +14,8 @@ import { EmployeeFormComponent } from '../employee-form/employee-form.component'
 })
 export class EmployeeEditComponent implements OnInit {
   employeeId: string = '';
+
+  // Employee data object
   employee: any = {
     first_name: '',
     last_name: '',
@@ -24,6 +26,11 @@ export class EmployeeEditComponent implements OnInit {
     date_of_joining: '',
     salary: 0,
   };
+
+  // Optional image
+  selectedImage: File | null = null;
+
+  // Error and success messages
   loading = true;
   error: any;
   errorMessage: string = '';
@@ -37,6 +44,7 @@ export class EmployeeEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Get ID from route and fetch employee data
     this.employeeId = this.route.snapshot.paramMap.get('id') || '';
     this.graphql.getEmployeeByEID(this.employeeId).then(
       (result: any) => {
@@ -52,6 +60,21 @@ export class EmployeeEditComponent implements OnInit {
 
   onUpdateEmployee() {
     this.loading = true;
+
+    // Convert data to FormData for image support
+    const formData = new FormData();
+    for (const key in this.employee) {
+      if (this.employee[key] !== undefined) {
+        formData.append(key, this.employee[key]);
+      }
+    }
+
+    // Append image file if available
+    if (this.selectedImage) {
+      formData.append('employee_photo', this.selectedImage);
+    }
+
+    // Call GraphQL service to update employee
     this.graphql.updateEmployee(this.employeeId, this.employee).then(
       () => {
         this.successMessage = 'Employee updated successfully!';

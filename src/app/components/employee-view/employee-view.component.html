@@ -6,33 +6,55 @@
     </button>
   </div>
 
-  <ul class="list-group">
-    <li class="list-group-item">
-      <strong>First Name:</strong> {{ employee.first_name }}
-    </li>
-    <li class="list-group-item">
-      <strong>Last Name:</strong> {{ employee.last_name }}
-    </li>
-    <li class="list-group-item">
-      <strong>Email:</strong> {{ employee.email }}
-    </li>
-    <li class="list-group-item">
-      <strong>Gender:</strong> {{ employee.gender }}
-    </li>
-    <li class="list-group-item">
-      <strong>Designation:</strong> {{ employee.designation }}
-    </li>
-    <li class="list-group-item">
-      <strong>Department:</strong> {{ employee.department }}
-    </li>
-    <li class="list-group-item">
-      <strong>Salary:</strong> ${{ employee.salary }}
-    </li>
-    <li class="list-group-item">
-      <strong>Date of Joining:</strong>
-      {{ employee.date_of_joining | date : "longDate" }}
-    </li>
-  </ul>
+  <div class="row">
+    <!-- Left Column: Employee Image -->
+    <div
+      class="col-md-4 text-center d-flex flex-column align-items-center justify-content-center"
+    >
+      <img
+        [src]="
+          employee.employee_photo
+            ? 'http://localhost:4000/' + employee.employee_photo
+            : 'assets/images/default-profile-photo.jpg'
+        "
+        alt="Employee Photo"
+        class="img-thumbnail mb-3"
+        width="200"
+        height="200"
+      />
+    </div>
+
+    <!-- Right Column: Employee Details -->
+    <div class="col-md-8">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <strong>First Name:</strong> {{ employee.first_name }}
+        </li>
+        <li class="list-group-item">
+          <strong>Last Name:</strong> {{ employee.last_name }}
+        </li>
+        <li class="list-group-item">
+          <strong>Email:</strong> {{ employee.email }}
+        </li>
+        <li class="list-group-item">
+          <strong>Gender:</strong> {{ employee.gender }}
+        </li>
+        <li class="list-group-item">
+          <strong>Designation:</strong> {{ employee.designation }}
+        </li>
+        <li class="list-group-item">
+          <strong>Department:</strong> {{ employee.department }}
+        </li>
+        <li class="list-group-item">
+          <strong>Salary:</strong> ${{ employee.salary }}
+        </li>
+        <li class="list-group-item">
+          <strong>Date of Joining:</strong>
+          {{ employee.date_of_joining | date : "longDate" }}
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <ng-template #loadingOrError>
