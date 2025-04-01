@@ -95,8 +95,6 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/employees']);
-    });
+    this.router.navigate(['/employees']);
   }
 }

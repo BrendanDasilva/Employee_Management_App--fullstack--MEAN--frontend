@@ -89,8 +89,6 @@ export class EmployeeAddComponent {
   }
 
   onCancel() {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/employees']);
-    });
+    this.router.navigate(['/employees']);
   }
 }
