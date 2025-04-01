@@ -180,22 +180,63 @@ export class GraphqlService {
     });
   }
 
-  // ====== Auth: Login Query ======
+  // ====== Auth: Login Mutation ======
   login(username: string, password: string) {
-    return this.client.query({
-      query: gql`
-        query Login($username: String!, $password: String!) {
+    return this.client.mutate({
+      mutation: gql`
+        mutation Login($username: String!, $password: String!) {
           login(username: $username, password: $password) {
-            token
             user {
               id
               username
+              email
             }
           }
         }
       `,
       variables: { username, password },
+      context: {
+        fetchOptions: {
+          credentials: 'include', // Send and receive cookies
+        },
+      },
+    });
+  }
+
+  // ====== Auth: Me Query ======
+  me() {
+    return this.client.query({
+      query: gql`
+        query Me {
+          me {
+            id
+            username
+            email
+          }
+        }
+      `,
+      context: {
+        fetchOptions: {
+          credentials: 'include',
+        },
+      },
       fetchPolicy: 'no-cache',
+    });
+  }
+
+  // ====== Auth: Logout Mutation ======
+  logout() {
+    return this.client.mutate({
+      mutation: gql`
+        mutation Logout {
+          logout
+        }
+      `,
+      context: {
+        fetchOptions: {
+          credentials: 'include',
+        },
+      },
     });
   }
 }

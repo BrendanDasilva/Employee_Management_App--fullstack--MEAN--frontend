@@ -1,31 +1,43 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { GraphqlService } from '../../services/graphql.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { GraphqlService } from '../../services/graphql.service';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
 })
-export class LoginComponent {
-  username = '';
-  password = '';
-  errorMessage = '';
+export class LoginComponent implements OnInit {
+  username: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
-  constructor(private graphql: GraphqlService, private router: Router) {}
+  constructor(
+    private graphql: GraphqlService,
+    private router: Router,
+    private appComponent: AppComponent
+  ) {}
 
-  onLogin() {
+  ngOnInit(): void {
+    this.graphql.me().then((res: any) => {
+      if (res.data.me) {
+        this.router.navigate(['/employees']);
+      }
+    });
+  }
+
+  onLogin(): void {
     this.graphql.login(this.username, this.password).then(
-      (result) => {
-        sessionStorage.setItem('token', result.data.login.token);
+      (res: any) => {
+        this.appComponent.checkAuth(); // Refresh navbar state
         this.router.navigate(['/employees']);
       },
-      (err) => {
-        this.errorMessage = err.message;
+      (err: any) => {
+        this.errorMessage = err.message || 'Login failed';
       }
     );
   }

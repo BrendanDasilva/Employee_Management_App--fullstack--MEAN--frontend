@@ -1,31 +1,51 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { GraphqlService } from '../../services/graphql.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { GraphqlService } from '../../services/graphql.service';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss',
 })
-export class SignupComponent {
-  username = '';
-  email = '';
-  password = '';
-  errorMessage = '';
+export class SignupComponent implements OnInit {
+  username: string = '';
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
-  constructor(private graphql: GraphqlService, private router: Router) {}
+  constructor(
+    private graphql: GraphqlService,
+    private router: Router,
+    private appComponent: AppComponent
+  ) {}
 
-  onSignUp() {
+  ngOnInit(): void {
+    this.graphql.me().then((res: any) => {
+      if (res.data.me) {
+        this.router.navigate(['/employees']);
+      }
+    });
+  }
+
+  onSignUp(): void {
     this.graphql.signup(this.username, this.email, this.password).then(
       () => {
-        this.router.navigate(['/login']);
+        this.graphql.login(this.username, this.password).then(
+          () => {
+            this.appComponent.checkAuth(); // Update app state
+            this.router.navigate(['/employees']);
+          },
+          () => {
+            this.errorMessage = 'Signup succeeded, but login failed.';
+          }
+        );
       },
-      (err) => {
-        this.errorMessage = err.message;
+      (err: any) => {
+        this.errorMessage = err.message || 'Sign up failed.';
       }
     );
   }

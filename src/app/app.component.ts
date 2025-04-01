@@ -1,27 +1,42 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { GraphqlService } from './services/graphql.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './app.component.html',
 })
-export class AppComponent {
-  constructor() {}
+export class AppComponent implements OnInit {
+  currentUser: any = null;
 
-  isLoggedIn(): boolean {
-    if (typeof window !== 'undefined') {
-      return !!sessionStorage.getItem('token');
-    }
-    return false;
+  constructor(private graphql: GraphqlService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.checkAuth();
   }
 
-  logout() {
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('token');
-      window.location.href = '/login';
-    }
+  checkAuth(): void {
+    this.graphql.me().then(
+      (res: any) => {
+        this.currentUser = res.data.me;
+      },
+      () => {
+        this.currentUser = null;
+      }
+    );
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.currentUser;
+  }
+
+  logout(): void {
+    this.graphql.logout().then(() => {
+      this.currentUser = null;
+      this.router.navigate(['/login']);
+    });
   }
 }
