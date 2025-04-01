@@ -15,6 +15,7 @@ export class SignupComponent implements OnInit {
   username: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = '';
   errorMessage: string = '';
 
   constructor(
@@ -32,6 +33,11 @@ export class SignupComponent implements OnInit {
   }
 
   onSignUp(): void {
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'Passwords do not match.';
+      return;
+    }
+
     this.graphql.signup(this.username, this.email, this.password).then(
       () => {
         this.graphql.login(this.username, this.password).then(

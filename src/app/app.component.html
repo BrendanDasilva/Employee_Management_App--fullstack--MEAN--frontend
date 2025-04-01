@@ -19,6 +19,9 @@
           >
         </li>
       </ul>
+      <span *ngIf="isLoggedIn()" class="navbar-text text-white me-3">
+        Logged in as: <strong>{{ currentUser?.username }}</strong>
+      </span>
       <button
         *ngIf="isLoggedIn()"
         class="btn btn-outline-light"
