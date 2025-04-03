@@ -28,14 +28,14 @@
       <button
         class="btn btn-outline-dark me-2"
         [disabled]="viewMode === 'list'"
-        (click)="viewMode = 'list'"
+        (click)="setViewMode('list')"
       >
         <span class="material-icons align-middle">view_list</span> List View
       </button>
       <button
         class="btn btn-outline-dark"
         [disabled]="viewMode === 'card'"
-        (click)="viewMode = 'card'"
+        (click)="setViewMode('card')"
       >
         <span class="material-icons align-middle">view_module</span> Card View
       </button>

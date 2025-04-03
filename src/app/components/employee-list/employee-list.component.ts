@@ -18,24 +18,33 @@ export class EmployeeListComponent implements OnInit {
   searchTerm: string = '';
   viewMode: 'list' | 'card' = 'list';
 
+  // Track if view mode was forced due to screen size
+  private wasAutoSwitched = false;
+
   constructor(private graphql: GraphqlService) {}
 
   ngOnInit(): void {
     this.loadAllEmployees();
 
-    // Set initial view based on screen size
+    // Initial view based on screen size
     if (window.innerWidth <= 991) {
       this.viewMode = 'card';
+      this.wasAutoSwitched = true;
     }
   }
 
-  // Automatically switch view on window resize
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    if (event.target.innerWidth <= 991) {
+    const width = event.target.innerWidth;
+
+    if (width <= 991 && this.viewMode !== 'card') {
       this.viewMode = 'card';
-    } else {
-      this.viewMode = 'list';
+      this.wasAutoSwitched = true;
+    }
+
+    // Optional: You could reset this if needed
+    if (width > 991 && this.wasAutoSwitched) {
+      this.wasAutoSwitched = false;
     }
   }
 
@@ -68,14 +77,6 @@ export class EmployeeListComponent implements OnInit {
     this.employees = [...this.allEmployees];
   }
 
-  viewEmployee(emp: any) {
-    console.log('View employee:', emp);
-  }
-
-  editEmployee(emp: any) {
-    console.log('Edit employee:', emp);
-  }
-
   deleteEmployee(id: string) {
     if (confirm('Are you sure you want to delete this employee?')) {
       this.graphql.deleteEmployee(id).then(
@@ -90,8 +91,9 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
-  // Toggle between list and card views
-  toggleView() {
-    this.viewMode = this.viewMode === 'list' ? 'card' : 'list';
+  // Manual toggle
+  setViewMode(mode: 'list' | 'card') {
+    this.viewMode = mode;
+    this.wasAutoSwitched = false; // cancel auto mode if user makes a choice
   }
 }
