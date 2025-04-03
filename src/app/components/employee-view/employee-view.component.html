@@ -1,63 +1,73 @@
-<div class="container mt-4" *ngIf="employee && !loading; else loadingOrError">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3 class="mb-0">Employee Details</h3>
-    <button class="btn btn-secondary" [routerLink]="['/employees']">
-      ← Back to Employee List
-    </button>
-  </div>
-
-  <div class="row">
-    <!-- Left Column: Employee Image -->
-    <div
-      class="col-md-4 text-center d-flex flex-column align-items-center justify-content-center"
-    >
-      <img
-        [src]="
-          employee.employee_photo
-            ? 'http://localhost:4000/' + employee.employee_photo
-            : 'assets/images/default-profile-photo.jpg'
-        "
-        alt="Employee Photo"
-        class="img-thumbnail mb-3"
-        width="200"
-        height="200"
-      />
+<div class="container mt-5 pb-5" style="max-width: 1000px">
+  <div
+    class="border rounded shadow p-4 bg-white"
+    *ngIf="employee && !loading; else loadingOrError"
+  >
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">Employee Details</h3>
+      <button class="btn btn-secondary" [routerLink]="['/employees']">
+        ← Back to Employee List
+      </button>
     </div>
 
-    <!-- Right Column: Employee Details -->
-    <div class="col-md-8">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <strong>First Name:</strong> {{ employee.first_name }}
-        </li>
-        <li class="list-group-item">
-          <strong>Last Name:</strong> {{ employee.last_name }}
-        </li>
-        <li class="list-group-item">
-          <strong>Email:</strong> {{ employee.email }}
-        </li>
-        <li class="list-group-item">
-          <strong>Gender:</strong> {{ employee.gender }}
-        </li>
-        <li class="list-group-item">
-          <strong>Designation:</strong> {{ employee.designation }}
-        </li>
-        <li class="list-group-item">
-          <strong>Department:</strong> {{ employee.department }}
-        </li>
-        <li class="list-group-item">
-          <strong>Salary:</strong> ${{ employee.salary }}
-        </li>
-        <li class="list-group-item">
-          <strong>Date of Joining:</strong>
-          {{ employee.date_of_joining | date : "longDate" }}
-        </li>
-      </ul>
+    <!-- Content -->
+    <div class="row">
+      <!-- Left Column: Employee Image -->
+      <div
+        class="col-md-4 text-center d-flex flex-column align-items-center justify-content-center"
+      >
+        <img
+          [src]="
+            employee.employee_photo
+              ? 'http://localhost:4000/' + employee.employee_photo
+              : 'assets/images/default-profile-photo.jpg'
+          "
+          alt="Employee Photo"
+          class="img-thumbnail mb-3"
+          width="200"
+          height="200"
+        />
+      </div>
+
+      <!-- Right Column: Employee Details -->
+      <div class="col-md-8">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>First Name:</strong> {{ employee.first_name }}
+          </li>
+          <li class="list-group-item">
+            <strong>Last Name:</strong> {{ employee.last_name }}
+          </li>
+          <li class="list-group-item">
+            <strong>Email:</strong> {{ employee.email }}
+          </li>
+          <li class="list-group-item">
+            <strong>Gender:</strong> {{ employee.gender }}
+          </li>
+          <li class="list-group-item">
+            <strong>Designation:</strong> {{ employee.designation }}
+          </li>
+          <li class="list-group-item">
+            <strong>Department:</strong> {{ employee.department }}
+          </li>
+          <li class="list-group-item">
+            <strong>Salary:</strong> ${{ employee.salary }}
+          </li>
+          <li class="list-group-item">
+            <strong>Date of Joining:</strong>
+            {{ employee.date_of_joining | date : "longDate" }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
+
+  <!-- Loading/Error Block -->
+  <ng-template #loadingOrError>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="loading" class="text-muted">Loading employee details...</div>
+  </ng-template>
 </div>
-
-<ng-template #loadingOrError>
-  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-  <div *ngIf="loading" class="text-muted">Loading employee details...</div>
-</ng-template>
