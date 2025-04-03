@@ -1,24 +1,37 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <span class="navbar-brand">Employee Management App</span>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item" *ngIf="!isLoggedIn()">
+<nav class="navbar navbar-dark bg-dark">
+  <div
+    class="container-fluid d-flex justify-content-between align-items-center"
+  >
+    <!-- Title: Full on large, short on small -->
+    <span class="navbar-brand mb-0 h1">
+      <span class="d-none d-lg-inline">Employee Management App</span>
+      <span class="d-inline d-lg-none">EMA</span>
+    </span>
+
+    <!-- Navigation + User Info -->
+    <div class="d-flex align-items-center">
+      <ul class="navbar-nav flex-row me-3">
+        <li class="nav-item me-3" *ngIf="!isLoggedIn()">
           <a class="nav-link" routerLink="/login" routerLinkActive="active"
             >Login</a
           >
         </li>
-        <li class="nav-item" *ngIf="!isLoggedIn()">
+        <li class="nav-item me-3" *ngIf="!isLoggedIn()">
           <a class="nav-link" routerLink="/signup" routerLinkActive="active"
             >Sign Up</a
           >
         </li>
-        <li class="nav-item" *ngIf="isLoggedIn()">
-          <a class="nav-link" routerLink="/employees" routerLinkActive="active"
-            >Employees</a
+        <li class="nav-item me-3" *ngIf="isLoggedIn()">
+          <a
+            class="btn btn-outline-light"
+            routerLink="/employees"
+            routerLinkActive="active"
           >
+            Employees
+          </a>
         </li>
       </ul>
+
       <span *ngIf="isLoggedIn()" class="navbar-text text-white me-3">
         Logged in as: <strong>{{ currentUser?.username }}</strong>
       </span>
