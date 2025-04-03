@@ -1,0 +1,5 @@
+/* Highlight table row on hover */
+.table-hover tbody tr:hover {
+  background-color: #848484; /* Light gray highlight */
+  cursor: pointer;
+}

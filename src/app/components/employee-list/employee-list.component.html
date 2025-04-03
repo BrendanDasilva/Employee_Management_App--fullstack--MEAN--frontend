@@ -43,9 +43,9 @@
   </div>
 
   <!-- List View -->
-  <div class="table-responsive">
+  <div class="table-responsive pb-5">
     <table
-      class="table table-striped table-bordered"
+      class="table table-striped table-bordered table-hover"
       *ngIf="viewMode === 'list'"
     >
       <thead class="table-dark">
@@ -93,10 +93,10 @@
   </div>
 
   <!-- Card View -->
-  <div *ngIf="viewMode === 'card'">
+  <div class="pb-5" *ngIf="viewMode === 'card'">
     <div class="row">
       <div class="col-md-4 mb-4" *ngFor="let employee of employees">
-        <div class="card h-100">
+        <div class="card h-100 card-hover">
           <img
             [src]="
               employee.employee_photo
