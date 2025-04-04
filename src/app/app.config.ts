@@ -4,7 +4,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 
-import { APOLLO_OPTIONS } from 'apollo-angular';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache, ApolloLink } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
@@ -13,12 +13,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(withInterceptors([])),
-    importProvidersFrom(HttpClientModule),
+    importProvidersFrom(HttpClientModule, ApolloModule),
     {
       provide: APOLLO_OPTIONS,
       useFactory: (httpLink: HttpLink) => {
-        const authLink = setContext((_, { headers }) => ({
-          headers,
+        const authLink = setContext(() => ({
           credentials: 'include',
         }));
 
