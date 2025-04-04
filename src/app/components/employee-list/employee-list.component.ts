@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { GraphqlService } from '../../services/graphql.service';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -21,7 +21,7 @@ export class EmployeeListComponent implements OnInit {
   // Track if view mode was forced due to screen size
   private wasAutoSwitched = false;
 
-  constructor(private graphql: GraphqlService) {}
+  constructor(private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
     this.loadAllEmployees();
@@ -50,7 +50,7 @@ export class EmployeeListComponent implements OnInit {
 
   loadAllEmployees() {
     this.loading = true;
-    this.graphql.getAllEmployees().then(
+    this.employeeService.getAllEmployees().then(
       (result: any) => {
         this.allEmployees = result.data.getAllemployees;
         this.employees = [...this.allEmployees];
@@ -79,7 +79,7 @@ export class EmployeeListComponent implements OnInit {
 
   deleteEmployee(id: string) {
     if (confirm('Are you sure you want to delete this employee?')) {
-      this.graphql.deleteEmployee(id).then(
+      this.employeeService.deleteEmployee(id).then(
         () => {
           this.employees = this.employees.filter((emp) => emp.id !== id);
           this.allEmployees = this.allEmployees.filter((emp) => emp.id !== id);

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
-import { GraphqlService } from '../../services/graphql.service';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-employee-view',
@@ -16,11 +16,14 @@ export class EmployeeViewComponent implements OnInit {
   errorMessage = '';
   loading = true;
 
-  constructor(private route: ActivatedRoute, private graphql: GraphqlService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private employeeService: EmployeeService
+  ) {}
 
   ngOnInit(): void {
     this.employeeId = this.route.snapshot.paramMap.get('id') || '';
-    this.graphql.getEmployeeByEID(this.employeeId).then(
+    this.employeeService.getEmployeeByEID(this.employeeId).then(
       (result: any) => {
         this.employee = result.data.getEmployeeByEID;
         this.loading = false;

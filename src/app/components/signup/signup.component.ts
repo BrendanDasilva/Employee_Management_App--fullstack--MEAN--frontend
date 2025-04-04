@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { GraphqlService } from '../../services/graphql.service';
 import { AppComponent } from '../../app.component';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -19,13 +19,13 @@ export class SignupComponent implements OnInit {
   errorMessage: string = '';
 
   constructor(
-    private graphql: GraphqlService,
+    private auth: AuthService,
     private router: Router,
     private appComponent: AppComponent
   ) {}
 
   ngOnInit(): void {
-    this.graphql.me().then((res: any) => {
+    this.auth.me().then((res: any) => {
       if (res.data.me) {
         this.router.navigate(['/employees']);
       }
@@ -38,9 +38,9 @@ export class SignupComponent implements OnInit {
       return;
     }
 
-    this.graphql.signup(this.username, this.email, this.password).then(
+    this.auth.signup(this.username, this.email, this.password).then(
       () => {
-        this.graphql.login(this.username, this.password).then(
+        this.auth.login(this.username, this.password).then(
           () => {
             this.appComponent.checkAuth(); // Update app state
             this.router.navigate(['/employees']);

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { GraphqlService } from '../../services/graphql.service';
+import { AuthService } from '../../auth.service';
 import { AppComponent } from '../../app.component';
 
 @Component({
@@ -17,13 +17,13 @@ export class LoginComponent implements OnInit {
   errorMessage: string = '';
 
   constructor(
-    private graphql: GraphqlService,
+    private auth: AuthService,
     private router: Router,
     private appComponent: AppComponent
   ) {}
 
   ngOnInit(): void {
-    this.graphql.me().then((res: any) => {
+    this.auth.me().then((res: any) => {
       if (res.data.me) {
         this.router.navigate(['/employees']);
       }
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(): void {
-    this.graphql.login(this.username, this.password).then(
+    this.auth.login(this.username, this.password).then(
       (res: any) => {
         this.appComponent.checkAuth(); // Refresh navbar state
         this.router.navigate(['/employees']);

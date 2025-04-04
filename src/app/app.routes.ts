@@ -28,7 +28,8 @@ export const routes: Routes = [
       import('./components/employee-view/employee-view.component').then(
         (m) => m.EmployeeViewComponent
       ),
-  },
+    renderMode: 'default' as any,
+  } as any,
   {
     path: 'employees/edit/:id',
     canActivate: [authGuard],
@@ -36,7 +37,8 @@ export const routes: Routes = [
       import('./components/employee-edit/employee-edit.component').then(
         (m) => m.EmployeeEditComponent
       ),
-  },
+    renderMode: 'default' as any,
+  } as any,
   {
     path: '**',
     loadComponent: () =>

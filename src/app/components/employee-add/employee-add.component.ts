@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GraphqlService } from '../../services/graphql.service';
+import { EmployeeService } from '../../services/employee.service';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
 
 @Component({
@@ -37,24 +37,27 @@ export class EmployeeAddComponent {
   // Used to trigger form reset
   resetTrigger = false;
 
-  constructor(private graphql: GraphqlService, private router: Router) {}
+  constructor(
+    private employeeService: EmployeeService,
+    private router: Router
+  ) {}
 
   onSubmit() {
     this.loading = true;
 
-    // Prepare FormData for image upload
-    const formData = new FormData();
-    for (const key in this.employee) {
-      formData.append(key, this.employee[key]);
-    }
+    // // Prepare FormData for image upload
+    // const formData = new FormData();
+    // for (const key in this.employee) {
+    //   formData.append(key, this.employee[key]);
+    // }
 
-    // Append image if selected
-    if (this.selectedImage) {
-      formData.append('employee_photo', this.selectedImage);
-    }
+    // // Append image if selected
+    // if (this.selectedImage) {
+    //   formData.append('employee_photo', this.selectedImage);
+    // }
 
     // Call GraphQL service to add employee
-    this.graphql.addEmployee(this.employee).then(
+    this.employeeService.addEmployee(this.employee).then(
       () => {
         this.successMessage = 'Employee added successfully!';
         this.errorMessage = '';

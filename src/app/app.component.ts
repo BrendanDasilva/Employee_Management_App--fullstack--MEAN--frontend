@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { GraphqlService } from './services/graphql.service';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,14 +12,14 @@ import { GraphqlService } from './services/graphql.service';
 export class AppComponent implements OnInit {
   currentUser: any = null;
 
-  constructor(private graphql: GraphqlService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.checkAuth();
   }
 
   checkAuth(): void {
-    this.graphql.me().then(
+    this.auth.me().then(
       (res: any) => {
         this.currentUser = res.data.me;
       },
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
-    this.graphql.logout().then(() => {
+    this.auth.logout().then(() => {
       this.currentUser = null;
       this.router.navigate(['/login']);
     });

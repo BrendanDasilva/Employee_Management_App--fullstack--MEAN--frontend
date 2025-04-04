@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { GraphqlService } from '../../services/graphql.service';
+import { EmployeeService } from '../../services/employee.service';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
 
 @Component({
@@ -39,14 +39,14 @@ export class EmployeeEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private graphql: GraphqlService,
+    private employeeService: EmployeeService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     // Get ID from route and fetch employee data
     this.employeeId = this.route.snapshot.paramMap.get('id') || '';
-    this.graphql.getEmployeeByEID(this.employeeId).then(
+    this.employeeService.getEmployeeByEID(this.employeeId).then(
       (result: any) => {
         this.employee = result.data.getEmployeeByEID;
         this.loading = false;
@@ -61,21 +61,21 @@ export class EmployeeEditComponent implements OnInit {
   onUpdateEmployee() {
     this.loading = true;
 
-    // Convert data to FormData for image support
-    const formData = new FormData();
-    for (const key in this.employee) {
-      if (this.employee[key] !== undefined) {
-        formData.append(key, this.employee[key]);
-      }
-    }
+    // // Convert data to FormData for image support
+    // const formData = new FormData();
+    // for (const key in this.employee) {
+    //   if (this.employee[key] !== undefined) {
+    //     formData.append(key, this.employee[key]);
+    //   }
+    // }
 
-    // Append image file if available
-    if (this.selectedImage) {
-      formData.append('employee_photo', this.selectedImage);
-    }
+    // // Append image file if available
+    // if (this.selectedImage) {
+    //   formData.append('employee_photo', this.selectedImage);
+    // }
 
     // Call GraphQL service to update employee
-    this.graphql.updateEmployee(this.employeeId, this.employee).then(
+    this.employeeService.updateEmployee(this.employeeId, this.employee).then(
       () => {
         this.successMessage = 'Employee updated successfully!';
         this.errorMessage = '';
