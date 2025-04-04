@@ -19,14 +19,14 @@ export class AppComponent implements OnInit {
   }
 
   checkAuth(): void {
-    this.auth.me().then(
-      (res: any) => {
+    this.auth.me().subscribe({
+      next: (res: any) => {
         this.currentUser = res.data.me;
       },
-      () => {
+      error: () => {
         this.currentUser = null;
-      }
-    );
+      },
+    });
   }
 
   isLoggedIn(): boolean {
@@ -34,9 +34,15 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
-    this.auth.logout().then(() => {
-      this.currentUser = null;
-      this.router.navigate(['/login']);
+    this.auth.logout().subscribe({
+      next: () => {
+        this.currentUser = null;
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        // Optional: Show error toast or retry logic
+        console.error('Logout failed');
+      },
     });
   }
 }

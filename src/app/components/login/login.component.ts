@@ -23,22 +23,29 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.auth.me().then((res: any) => {
-      if (res.data.me) {
-        this.router.navigate(['/employees']);
-      }
+    this.auth.me().subscribe({
+      next: (res: any) => {
+        if (res.data?.me) {
+          this.router.navigate(['/employees']);
+        }
+      },
+      error: (err: any) => {
+        console.warn('User not logged in:', err);
+        // Not logged in is okay here — just remain on login screen
+      },
     });
   }
 
   onLogin(): void {
-    this.auth.login(this.username, this.password).then(
-      (res: any) => {
+    this.auth.login(this.username, this.password).subscribe({
+      next: (res: any) => {
         this.appComponent.checkAuth(); // Refresh navbar state
         this.router.navigate(['/employees']);
       },
-      (err: any) => {
+      error: (err: any) => {
         this.errorMessage = err.message || 'Login failed';
-      }
-    );
+        console.error('Login error:', err);
+      },
+    });
   }
 }

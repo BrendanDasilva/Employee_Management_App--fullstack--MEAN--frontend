@@ -13,7 +13,6 @@ import { EmployeeFormComponent } from '../employee-form/employee-form.component'
   styleUrl: './employee-add.component.scss',
 })
 export class EmployeeAddComponent {
-  // Default employee structure
   employee: any = {
     first_name: '',
     last_name: '',
@@ -25,16 +24,11 @@ export class EmployeeAddComponent {
     salary: 0,
   };
 
-  // Image file (optional)
   selectedImage: File | null = null;
-
-  // Error and success messages
   errorMessage = '';
   successMessage = '';
   loading = false;
   today: string = new Date().toISOString().split('T')[0];
-
-  // Used to trigger form reset
   resetTrigger = false;
 
   constructor(
@@ -45,25 +39,12 @@ export class EmployeeAddComponent {
   onSubmit() {
     this.loading = true;
 
-    // // Prepare FormData for image upload
-    // const formData = new FormData();
-    // for (const key in this.employee) {
-    //   formData.append(key, this.employee[key]);
-    // }
-
-    // // Append image if selected
-    // if (this.selectedImage) {
-    //   formData.append('employee_photo', this.selectedImage);
-    // }
-
-    // Call GraphQL service to add employee
-    this.employeeService.addEmployee(this.employee).then(
-      () => {
+    this.employeeService.addEmployee(this.employee).subscribe({
+      next: () => {
         this.successMessage = 'Employee added successfully!';
         this.errorMessage = '';
         this.loading = false;
 
-        // Reset form
         this.employee = {
           first_name: '',
           last_name: '',
@@ -75,20 +56,19 @@ export class EmployeeAddComponent {
           salary: 0,
         };
 
-        // Trigger reset
         this.resetTrigger = true;
 
-        // Clear success message after 5 seconds
         setTimeout(() => {
           this.successMessage = '';
         }, 5000);
       },
-      (err) => {
+      error: (err: any) => {
+        console.error('Error adding employee:', err);
         this.errorMessage = 'Failed to add employee.';
         this.successMessage = '';
         this.loading = false;
-      }
-    );
+      },
+    });
   }
 
   onCancel() {

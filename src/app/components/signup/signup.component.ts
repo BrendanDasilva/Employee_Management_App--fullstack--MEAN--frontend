@@ -25,10 +25,15 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.auth.me().then((res: any) => {
-      if (res.data.me) {
-        this.router.navigate(['/employees']);
-      }
+    this.auth.me().subscribe({
+      next: (res: any) => {
+        if (res.data?.me) {
+          this.router.navigate(['/employees']);
+        }
+      },
+      error: (err: any) => {
+        console.warn('User not logged in (signup page):', err);
+      },
     });
   }
 
@@ -38,21 +43,23 @@ export class SignupComponent implements OnInit {
       return;
     }
 
-    this.auth.signup(this.username, this.email, this.password).then(
-      () => {
-        this.auth.login(this.username, this.password).then(
-          () => {
-            this.appComponent.checkAuth(); // Update app state
+    this.auth.signup(this.username, this.email, this.password).subscribe({
+      next: () => {
+        // After signup, auto-login
+        this.auth.login(this.username, this.password).subscribe({
+          next: () => {
+            this.appComponent.checkAuth();
             this.router.navigate(['/employees']);
           },
-          () => {
+          error: () => {
             this.errorMessage = 'Signup succeeded, but login failed.';
-          }
-        );
+          },
+        });
       },
-      (err: any) => {
+      error: (err: any) => {
         this.errorMessage = err.message || 'Sign up failed.';
-      }
-    );
+        console.error('Signup error:', err);
+      },
+    });
   }
 }

@@ -1,32 +1,13 @@
 import { Injectable } from '@angular/core';
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloLink,
-  HttpLink,
-} from '@apollo/client/core';
-import { environment } from '../../environments/environment';
+import { Apollo } from 'apollo-angular';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GraphqlService {
-  private client: ApolloClient<any>;
+  constructor(private apollo: Apollo) {}
 
-  constructor() {
-    const httpLink = new HttpLink({
-      uri: environment.graphqlUri,
-    });
-
-    const link = ApolloLink.from([httpLink]);
-
-    this.client = new ApolloClient({
-      link,
-      cache: new InMemoryCache(),
-    });
-  }
-
-  getClient(): ApolloClient<any> {
-    return this.client;
+  getClient(): Apollo {
+    return this.apollo;
   }
 }

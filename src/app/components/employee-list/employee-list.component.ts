@@ -18,7 +18,6 @@ export class EmployeeListComponent implements OnInit {
   searchTerm: string = '';
   viewMode: 'list' | 'card' = 'list';
 
-  // Track if view mode was forced due to screen size
   private wasAutoSwitched = false;
 
   constructor(private employeeService: EmployeeService) {}
@@ -26,7 +25,6 @@ export class EmployeeListComponent implements OnInit {
   ngOnInit(): void {
     this.loadAllEmployees();
 
-    // Initial view based on screen size
     if (window.innerWidth <= 991) {
       this.viewMode = 'card';
       this.wasAutoSwitched = true;
@@ -42,7 +40,6 @@ export class EmployeeListComponent implements OnInit {
       this.wasAutoSwitched = true;
     }
 
-    // Optional: You could reset this if needed
     if (width > 991 && this.wasAutoSwitched) {
       this.wasAutoSwitched = false;
     }
@@ -50,17 +47,18 @@ export class EmployeeListComponent implements OnInit {
 
   loadAllEmployees() {
     this.loading = true;
-    this.employeeService.getAllEmployees().then(
-      (result: any) => {
+    this.employeeService.getAllEmployees().subscribe({
+      next: (result: any) => {
         this.allEmployees = result.data.getAllemployees;
         this.employees = [...this.allEmployees];
         this.loading = false;
       },
-      (err: any) => {
+      error: (err: any) => {
+        console.error('Failed to load employees:', err);
         this.error = err;
         this.loading = false;
-      }
-    );
+      },
+    });
   }
 
   onSearch() {
@@ -79,21 +77,20 @@ export class EmployeeListComponent implements OnInit {
 
   deleteEmployee(id: string) {
     if (confirm('Are you sure you want to delete this employee?')) {
-      this.employeeService.deleteEmployee(id).then(
-        () => {
+      this.employeeService.deleteEmployee(id).subscribe({
+        next: () => {
           this.employees = this.employees.filter((emp) => emp.id !== id);
           this.allEmployees = this.allEmployees.filter((emp) => emp.id !== id);
         },
-        (err) => {
+        error: (err: any) => {
           console.error('Delete failed:', err);
-        }
-      );
+        },
+      });
     }
   }
 
-  // Manual toggle
   setViewMode(mode: 'list' | 'card') {
     this.viewMode = mode;
-    this.wasAutoSwitched = false; // cancel auto mode if user makes a choice
+    this.wasAutoSwitched = false;
   }
 }

@@ -23,15 +23,17 @@ export class EmployeeViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.employeeId = this.route.snapshot.paramMap.get('id') || '';
-    this.employeeService.getEmployeeByEID(this.employeeId).then(
-      (result: any) => {
+
+    this.employeeService.getEmployeeByEID(this.employeeId).subscribe({
+      next: (result: any) => {
         this.employee = result.data.getEmployeeByEID;
         this.loading = false;
       },
-      (err) => {
+      error: (err: any) => {
+        console.error('Error loading employee data', err);
         this.errorMessage = 'Failed to load employee data';
         this.loading = false;
-      }
-    );
+      },
+    });
   }
 }
