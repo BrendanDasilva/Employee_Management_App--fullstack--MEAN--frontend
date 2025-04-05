@@ -17,9 +17,14 @@ export const appConfig: ApplicationConfig = {
     {
       provide: APOLLO_OPTIONS,
       useFactory: (httpLink: HttpLink) => {
-        const authLink = setContext(() => ({
-          credentials: 'include',
-        }));
+        const authLink = setContext(() => {
+          const token = localStorage.getItem('auth_token');
+          return {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : '',
+            },
+          };
+        });
 
         const link = ApolloLink.from([
           authLink,
