@@ -13,8 +13,10 @@ import { EmployeeFormComponent } from '../employee-form/employee-form.component'
   styleUrl: './employee-edit.component.scss',
 })
 export class EmployeeEditComponent implements OnInit {
+  // The ID of the employee to edit, extracted from route
   employeeId: string = '';
 
+  // Holds the employee data for binding to the form
   employee: any = {
     first_name: '',
     last_name: '',
@@ -26,13 +28,15 @@ export class EmployeeEditComponent implements OnInit {
     salary: 0,
   };
 
+  // Placeholder for file input (not used in update mutation currently)
   selectedImage: File | null = null;
 
+  // UI state flags and messages
   loading = true;
   error: any;
   errorMessage: string = '';
   successMessage: string = '';
-  today: string = new Date().toISOString().split('T')[0];
+  today: string = new Date().toISOString().split('T')[0]; // Used to limit date input
 
   constructor(
     private route: ActivatedRoute,
@@ -41,8 +45,10 @@ export class EmployeeEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Retrieve employee ID from route parameters
     this.employeeId = this.route.snapshot.paramMap.get('id') || '';
 
+    // Load employee data to populate form
     this.employeeService.getEmployeeByEID(this.employeeId).subscribe({
       next: (result: any) => {
         this.employee = result.data.getEmployeeByEID;
@@ -56,6 +62,7 @@ export class EmployeeEditComponent implements OnInit {
     });
   }
 
+  // Called when the form is submitted to update employee details
   onUpdateEmployee() {
     this.loading = true;
 
@@ -67,6 +74,7 @@ export class EmployeeEditComponent implements OnInit {
           this.errorMessage = '';
           this.loading = false;
 
+          // Clear success message after 3 seconds
           setTimeout(() => {
             this.successMessage = '';
           }, 3000);
@@ -80,6 +88,7 @@ export class EmployeeEditComponent implements OnInit {
       });
   }
 
+  // Navigates back to employee list on cancel
   onCancel() {
     this.router.navigate(['/employees']);
   }

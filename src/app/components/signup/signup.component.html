@@ -5,7 +5,9 @@
   <div class="card shadow p-4 w-100" style="max-width: 500px">
     <h2 class="text-center mb-4">Sign Up</h2>
 
+    <!-- Signup Form -->
     <form (ngSubmit)="onSignUp()">
+      <!-- Username Input -->
       <div class="mb-3">
         <label class="form-label">Username</label>
         <input
@@ -17,6 +19,7 @@
         />
       </div>
 
+      <!-- Email Input -->
       <div class="mb-3">
         <label class="form-label">Email</label>
         <input
@@ -28,6 +31,7 @@
         />
       </div>
 
+      <!-- Password Input -->
       <div class="mb-3">
         <label class="form-label">Password</label>
         <input
@@ -39,6 +43,7 @@
         />
       </div>
 
+      <!-- Confirm Password Input -->
       <div class="mb-3">
         <label class="form-label">Confirm Password</label>
         <input
@@ -50,8 +55,10 @@
         />
       </div>
 
+      <!-- Submit Button -->
       <button type="submit" class="btn btn-primary w-100">Sign Up</button>
 
+      <!-- Error Message -->
       <div *ngIf="errorMessage" class="alert alert-danger mt-3">
         {{ errorMessage }}
       </div>

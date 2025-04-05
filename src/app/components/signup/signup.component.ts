@@ -12,6 +12,7 @@ import { AuthService } from '../../auth.service';
   templateUrl: './signup.component.html',
 })
 export class SignupComponent implements OnInit {
+  // Form fields
   username: string = '';
   email: string = '';
   password: string = '';
@@ -25,6 +26,7 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // If user is already logged in, redirect to employees list
     this.auth.me().subscribe({
       next: (res: any) => {
         if (res.data?.me) {
@@ -38,16 +40,19 @@ export class SignupComponent implements OnInit {
   }
 
   onSignUp(): void {
+    // Check if passwords match before attempting signup
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Passwords do not match.';
       return;
     }
 
+    // Call signup mutation
     this.auth.signup(this.username, this.email, this.password).subscribe({
       next: () => {
-        // After signup, auto-login
+        // On successful signup, automatically log the user in
         this.auth.login(this.username, this.password).subscribe({
           next: () => {
+            // Update app state and navigate to protected route
             this.appComponent.checkAuth();
             this.router.navigate(['/employees']);
           },

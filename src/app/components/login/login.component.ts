@@ -12,17 +12,19 @@ import { AppComponent } from '../../app.component';
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
+  // Form input bindings
   username: string = '';
   password: string = '';
   errorMessage: string = '';
 
   constructor(
-    private auth: AuthService,
-    private router: Router,
-    private appComponent: AppComponent
+    private auth: AuthService, // Auth service for login logic
+    private router: Router, // Router for navigation
+    private appComponent: AppComponent // Needed to trigger global auth refresh
   ) {}
 
   ngOnInit(): void {
+    // Auto-redirect if already logged in
     this.auth.me().subscribe({
       next: (res: any) => {
         if (res.data?.me) {
@@ -31,19 +33,20 @@ export class LoginComponent implements OnInit {
       },
       error: (err: any) => {
         console.warn('User not logged in:', err);
-        // Not logged in is okay here — just remain on login screen
+        // No active session, remain on login page
       },
     });
   }
 
   onLogin(): void {
+    // Attempt login with provided credentials
     this.auth.login(this.username, this.password).subscribe({
       next: (res: any) => {
-        this.appComponent.checkAuth(); // Refresh navbar state
-        this.router.navigate(['/employees']);
+        this.appComponent.checkAuth(); // Update currentUser in navbar
+        this.router.navigate(['/employees']); // Redirect to employee dashboard
       },
       error: (err: any) => {
-        this.errorMessage = err.message || 'Login failed';
+        this.errorMessage = err.message || 'Login failed'; // Show user-friendly error
         console.error('Login error:', err);
       },
     });

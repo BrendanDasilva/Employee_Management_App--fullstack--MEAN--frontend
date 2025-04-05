@@ -1,4 +1,4 @@
-<!-- Alerts -->
+<!-- Alert Messages -->
 <div *ngIf="errorMessage" class="alert alert-danger mt-3">
   {{ errorMessage }}
 </div>
@@ -7,6 +7,7 @@
   {{ successMessage }}
 </div>
 
+<!-- Employee Form -->
 <form
   #addForm="ngForm"
   (ngSubmit)="onSubmit()"
@@ -14,9 +15,10 @@
   enctype="multipart/form-data"
 >
   <div class="row">
-    <!-- Left Column: Image Upload -->
+    <!-- ======================= LEFT COLUMN: Profile Picture ======================= -->
     <div class="col-md-6 d-flex align-items-center justify-content-center">
       <div class="text-center">
+        <!-- Preview: uploaded, existing, or fallback image -->
         <img
           [src]="
             imagePreview ||
@@ -28,6 +30,7 @@
           width="400"
           height="400"
         />
+        <!-- File Upload -->
         <div class="mb-3">
           <input
             type="file"
@@ -39,7 +42,7 @@
       </div>
     </div>
 
-    <!-- Right Column: Employee Fields -->
+    <!-- ======================= RIGHT COLUMN: Form Fields ======================= -->
     <div class="col-md-6">
       <!-- First Name -->
       <div class="mb-3">
@@ -55,6 +58,7 @@
           pattern="^[a-zA-Z]+$"
           #firstName="ngModel"
         />
+        <!-- First Name Validation -->
         <div class="text-danger" *ngIf="firstName.invalid && firstName.touched">
           <div *ngIf="firstName.errors?.['required']">
             First name is required.
@@ -81,6 +85,7 @@
           pattern="^[a-zA-Z]+$"
           #lastName="ngModel"
         />
+        <!-- Last Name Validation -->
         <div class="text-danger" *ngIf="lastName.invalid && lastName.touched">
           <div *ngIf="lastName.errors?.['required']">
             Last name is required.
@@ -105,6 +110,7 @@
           email
           #email="ngModel"
         />
+        <!-- Email Validation -->
         <div class="text-danger" *ngIf="email.invalid && email.touched">
           <div *ngIf="email.errors?.['required']">Email is required.</div>
           <div *ngIf="email.errors?.['email']">
@@ -128,6 +134,7 @@
           <option value="Female">Female</option>
           <option value="Other">Other</option>
         </select>
+        <!-- Gender Validation -->
         <div class="text-danger" *ngIf="gender.invalid && gender.touched">
           Gender is required.
         </div>
@@ -145,6 +152,7 @@
           maxlength="50"
           #designation="ngModel"
         />
+        <!-- Designation Validation -->
         <div
           class="text-danger"
           *ngIf="designation.invalid && designation.touched"
@@ -170,6 +178,7 @@
           maxlength="50"
           #department="ngModel"
         />
+        <!-- Department Validation -->
         <div
           class="text-danger"
           *ngIf="department.invalid && department.touched"
@@ -193,6 +202,7 @@
           max="{{ today }}"
           #doj="ngModel"
         />
+        <!-- DOJ Validation -->
         <div class="text-danger" *ngIf="doj.invalid && doj.touched">
           <div *ngIf="doj.errors?.['required']">
             Date of joining is required.
@@ -214,6 +224,7 @@
           max="1000000"
           #salary="ngModel"
         />
+        <!-- Salary Validation -->
         <div class="text-danger" *ngIf="salary.invalid && salary.touched">
           <div *ngIf="salary.errors?.['required']">Salary is required.</div>
           <div *ngIf="salary.errors?.['min']">Minimum salary is 50000.</div>
@@ -223,11 +234,14 @@
     </div>
   </div>
 
-  <!-- Buttons -->
+  <!-- Form Buttons -->
   <div class="d-flex justify-content-between mt-4">
+    <!-- Cancel / Return -->
     <button type="button" class="btn btn-secondary" (click)="onCancel()">
       Return to Employee List
     </button>
+
+    <!-- Submit -->
     <button
       type="submit"
       class="btn btn-primary"

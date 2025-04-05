@@ -3,12 +3,13 @@ import { gql } from '@apollo/client/core';
 import { GraphqlService } from './graphql.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root', // This makes the service globally available
 })
 export class EmployeeService {
   private client;
 
   constructor(private graphql: GraphqlService) {
+    // Retrieve the Apollo client instance from the wrapper service
     this.client = this.graphql.getClient();
   }
 
@@ -28,7 +29,7 @@ export class EmployeeService {
           }
         }
       `,
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'no-cache', // Always fetch fresh data from server (no caching)
     });
   }
 
@@ -50,8 +51,8 @@ export class EmployeeService {
           }
         }
       `,
-      variables: { id },
-      fetchPolicy: 'no-cache',
+      variables: { id }, // Pass dynamic variable for employee ID
+      fetchPolicy: 'no-cache', // Ensure up-to-date info
     });
   }
 
@@ -83,7 +84,7 @@ export class EmployeeService {
           }
         }
       `,
-      variables: { ...employeeData },
+      variables: { ...employeeData }, // Spread input into GraphQL variables
     });
   }
 
@@ -113,7 +114,7 @@ export class EmployeeService {
           }
         }
       `,
-      variables: { id, ...updatedData },
+      variables: { id, ...updatedData }, // Combine ID with updated fields
     });
   }
 
@@ -125,7 +126,7 @@ export class EmployeeService {
           deleteEmployee(id: $id)
         }
       `,
-      variables: { id },
+      variables: { id }, // ID of employee to delete
     });
   }
 
@@ -145,8 +146,8 @@ export class EmployeeService {
           }
         }
       `,
-      variables: { designation, department },
-      fetchPolicy: 'no-cache',
+      variables: { designation, department }, // Filter criteria
+      fetchPolicy: 'no-cache', // Avoid stale results
     });
   }
 }

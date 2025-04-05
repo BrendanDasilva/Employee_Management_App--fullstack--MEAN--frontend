@@ -11,12 +11,20 @@ import { setContext } from '@apollo/client/link/context';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    // Provide router and app routes
     provideRouter(routes),
+
+    // Provide Angular's native HTTP client (plus any interceptors if added later)
     provideHttpClient(withInterceptors([])),
+
+    // Import essential modules for Apollo and HttpClient usage
     importProvidersFrom(HttpClientModule, ApolloModule),
+
+    // Provide Apollo configuration (used by GraphqlService)
     {
       provide: APOLLO_OPTIONS,
       useFactory: (httpLink: HttpLink) => {
+        // Create an auth link to add the Authorization header to every request
         const authLink = setContext(() => {
           const token = localStorage.getItem('auth_token');
           return {
@@ -26,19 +34,20 @@ export const appConfig: ApplicationConfig = {
           };
         });
 
+        // Combine authLink and HTTP link for GraphQL requests
         const link = ApolloLink.from([
-          authLink,
+          authLink, // Sets auth header
           httpLink.create({
-            uri: 'https://employeemanagementapp-backend.onrender.com/graphql',
+            uri: 'https://employeemanagementapp-backend.onrender.com/graphql', // Backend GraphQL endpoint
           }),
         ]);
 
         return {
-          cache: new InMemoryCache(),
-          link,
+          cache: new InMemoryCache(), // Caching for better performance
+          link, // Final link used by Apollo Client
         };
       },
-      deps: [HttpLink],
+      deps: [HttpLink], // Inject HttpLink for useFactory
     },
   ],
 };
